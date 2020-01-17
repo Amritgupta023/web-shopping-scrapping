@@ -4,6 +4,7 @@ const bodyParser = require('body-parser')
 
 require('./utils/mongoose');
 const productListRoute = require('./api/index');
+const {priceCompareCron} = require('./utils/crons/priceCompare.cron');
 
 
 
@@ -12,37 +13,10 @@ app.use(bodyParser.urlencoded({ extended: false }))
 // parse application/json
 app.use(bodyParser.json())
 
+priceCompareCron();
+
 
 app.use('/',productListRoute);
-
-// const ProductModel = require('./models/index');
-
-
-
-
-// app.post('/addProduct',async (req,res)=>{
-//   try {
-//     let productToAdd = await RequestForProductName(req.body.productLink);
-
-//     productToAdd['currentPriceWhenAlertSet'] = productToAdd['currentPrice'];
-//     productToAdd['originalPriceWhenAlertSet'] = productToAdd['originalPrice'];
-//     productToAdd['currentDiscountWhenAlertSet'] = productToAdd['discount'];
-//     delete productToAdd['currentPrice'];
-//     delete productToAdd['originalPrice'];
-//     delete productToAdd['discount'];
-
-//     productToAdd['priceForAlert'] = +req.body.priceForAlert.replace(/[^1-9]/g,"");
-//     productToAdd['productLink'] = req.body.productLink;
-
-//     let productAdded = await new ProductModel(productToAdd).save()
-//     res.send(productAdded);
-
-//   } catch (error) {
-//     console.log("Error",error);
-//     throw error;
-//   }
-
-// })
 
 app.listen(3000,()=>{
   console.log("The app is listing on the port 3000");
